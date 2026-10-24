@@ -1,0 +1,121 @@
+import React, { useState } from 'react';
+import { Heart, BookOpen, User, Lock, Mail, Play, Sparkles } from 'lucide-react';
+
+export default function HealthApp() {
+  const [view, setView] = useState('login'); // login, register, blogs
+
+  return (
+    <div className="max-w-md mx-auto h-[600px] bg-slate-50 border rounded-2xl shadow-xl overflow-hidden flex flex-col font-sans">
+      {/* Header */}
+      <div className="bg-teal-600 text-white p-4 text-center font-bold text-lg flex justify-between items-center">
+        <span>Mind & Body Care</span>
+        <Sparkles className="w-5 h-5" />
+      </div>
+
+      {/* Content Area */}
+      <div className="flex-1 p-6 overflow-y-auto">
+        {view === 'login' && (
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-slate-800">Welcome Back</h2>
+            <div className="space-y-3">
+              <div className="flex items-center border rounded-lg p-2 bg-white">
+                <Mail className="w-5 h-5 text-gray-400 mr-2" />
+                <input type="email" placeholder="Email" className="w-full outline-none text-sm" />
+              </div>
+              <div className="flex items-center border rounded-lg p-2 bg-white">
+                <Lock className="w-5 h-5 text-gray-400 mr-2" />
+                <input type="password" placeholder="Password" className="w-full outline-none text-sm" />
+              </div>
+              <button 
+                onClick={() => setView('blogs')} 
+                className="w-full bg-teal-600 text-white py-2 rounded-lg font-semibold hover:bg-teal-700 transition"
+              >
+                Log In
+              </button>
+            </div>
+            <p className="text-xs text-center text-slate-500">
+              Don't have an account?{' '}
+              <button onClick={() => setView('register')} className="text-teal-600 font-semibold">Register</button>
+            </p>
+          </div>
+        )}
+
+        {view === 'register' && (
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-slate-800">Create Account</h2>
+            <div className="space-y-3">
+              <div className="flex items-center border rounded-lg p-2 bg-white">
+                <User className="w-5 h-5 text-gray-400 mr-2" />
+                <input type="text" placeholder="Full Name" className="w-full outline-none text-sm" />
+              </div>
+              <div className="flex items-center border rounded-lg p-2 bg-white">
+                <Mail className="w-5 h-5 text-gray-400 mr-2" />
+                <input type="email" placeholder="Email" className="w-full outline-none text-sm" />
+              </div>
+              <div className="flex items-center border rounded-lg p-2 bg-white">
+                <Lock className="w-5 h-5 text-gray-400 mr-2" />
+                <input type="password" placeholder="Password" className="w-full outline-none text-sm" />
+              </div>
+              <button 
+                onClick={() => setView('blogs')} 
+                className="w-full bg-teal-600 text-white py-2 rounded-lg font-semibold hover:bg-teal-700 transition"
+              >
+                Register
+              </button>
+            </div>
+            <p className="text-xs text-center text-slate-500">
+              Already registered?{' '}
+              <button onClick={() => setView('login')} className="text-teal-600 font-semibold">Log In</button>
+            </p>
+          </div>
+        )}
+
+        {view === 'blogs' && (
+          <div className="space-y-6">
+            {/* Health Routine Blogs */}
+            <div>
+              <h3 className="font-bold text-slate-800 mb-2 flex items-center gap-1">
+                <BookOpen className="w-4 h-4 text-teal-600" /> Health Routine Blogs
+              </h3>
+              <div className="space-y-2">
+                <div className="bg-white p-3 rounded-lg border shadow-sm">
+                  <p className="font-semibold text-sm">Morning Mindfulness Exercises</p>
+                  <p className="text-xs text-slate-500">Start your day with 10 minutes of guided breathing...</p>
+                </div>
+                <div className="bg-white p-3 rounded-lg border shadow-sm">
+                  <p className="font-semibold text-sm">Nighttime Unwind Guide</p>
+                  <p className="text-xs text-slate-500">Best practices for restful sleep and mental clarity...</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Self-Care Blogs */}
+            <div>
+              <h3 className="font-bold text-slate-800 mb-2 flex items-center gap-1">
+                <Heart className="w-4 h-4 text-rose-500" /> Self-Care Blogs
+              </h3>
+              <div className="space-y-2">
+                <div className="bg-white p-3 rounded-lg border shadow-sm">
+                  <p className="font-semibold text-sm">5 Ways to Prevent Burnout</p>
+                  <p className="text-xs text-slate-500">Learn to establish boundaries and prioritize peace...</p>
+                </div>
+                <div className="bg-white p-3 rounded-lg border shadow-sm">
+                  <p className="font-semibold text-sm">Journaling for Gratitude</p>
+                  <p className="text-xs text-slate-500">Simple prompts to shift your perspective daily...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Bottom Nav */}
+      {view === 'blogs' && (
+        <div className="border-t bg-white p-3 flex justify-around text-xs text-slate-500">
+          <button className="text-teal-600 font-bold">Home</button>
+          <button onClick={() => setView('login')}>Logout</button>
+        </div>
+      )}
+    </div>
+  );
+}
