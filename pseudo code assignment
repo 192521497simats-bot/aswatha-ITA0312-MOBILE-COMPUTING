@@ -119,3 +119,688 @@ export default function HealthApp() {
     </div>
   );
 }
+
+import 'package:flutter/material.dart';
+
+void main() => runApp(const FitnessApp());
+
+class FitnessApp extends StatelessWidget {
+  const FitnessApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Fitness & Routine',
+      theme: ThemeData(primarySwatch: Colors.deepOrange, useMaterial3: true),
+      home: const FitnessAuthScreen(),
+    );
+  }
+}
+
+class FitnessAuthScreen extends StatefulWidget {
+  const FitnessAuthScreen({super.key});
+
+  @override
+  State<FitnessAuthScreen> createState() => _FitnessAuthScreenState();
+}
+
+class _FitnessAuthScreenState extends State<FitnessAuthScreen> {
+  bool isLogin = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.fitness_center,
+                  size: 80,
+                  color: Colors.deepOrange,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  isLogin ? 'Fitness Login' : 'Fitness Register',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                const SizedBox(height: 24),
+                const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    prefixIcon: Icon(Icons.email),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    prefixIcon: Icon(Icons.lock),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                  ),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const FitnessMainScreen(),
+                      ),
+                    );
+                  },
+                  child: Text(isLogin ? 'Login' : 'Register'),
+                ),
+                TextButton(
+                  onPressed: () => setState(() => isLogin = !isLogin),
+                  child: Text(
+                    isLogin
+                        ? 'Need an account? Register'
+                        : 'Have an account? Login',
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class FitnessMainScreen extends StatefulWidget {
+  const FitnessMainScreen({super.key});
+
+  @override
+  State<FitnessMainScreen> createState() => _FitnessMainScreenState();
+}
+
+class _FitnessMainScreenState extends State<FitnessMainScreen> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    const FitnessBlogTab(),
+    const DietPlannerTab(),
+    const FitnessVideosTab(),
+    const SubscriptionTab(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Body Fitness Routine')),
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.deepOrange,
+        unselectedItemColor: Colors.grey,
+        onTap: (index) => setState(() => _selectedIndex = index),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.article),
+            label: 'Fitness Blog',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.restaurant_menu),
+            label: 'Diet Planner',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.video_library),
+            label: 'Fitness Videos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.payment),
+            label: 'Subscription',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class FitnessBlogTab extends StatelessWidget {
+  const FitnessBlogTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: 4,
+      itemBuilder: (context, index) {
+        return Card(
+          child: ListTile(
+            leading: const Icon(Icons.article, color: Colors.deepOrange),
+            title: Text('Daily Workout Tip #${index + 1}'),
+            subtitle: const Text('Learn proper post-workout stretch techniques.'),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class DietPlannerTab extends StatelessWidget {
+  const DietPlannerTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: const [
+        Card(
+          child: ListTile(
+            title: Text('Breakfast (8:00 AM)'),
+            subtitle: Text('Oatmeal with berries & protein shake'),
+          ),
+        ),
+        Card(
+          child: ListTile(
+            title: Text('Lunch (1:00 PM)'),
+            subtitle: Text('Grilled chicken breast with quinoa and salad'),
+          ),
+        ),
+        Card(
+          child: ListTile(
+            title: Text('Dinner (7:00 PM)'),
+            subtitle: Text('Baked salmon with steamed broccoli'),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class FitnessVideosTab extends StatelessWidget {
+  const FitnessVideosTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      padding: const EdgeInsets.all(16),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+      ),
+      itemCount: 4,
+      itemBuilder: (context, index) {
+        return Container(
+          color: Colors.grey.shade200,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.play_circle_fill,
+                size: 50,
+                color: Colors.deepOrange,
+              ),
+              const SizedBox(height: 8),
+              Text('Workout Video #${index + 1}'),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class SubscriptionTab extends StatelessWidget {
+  const SubscriptionTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text(
+            'Payment & Subscription',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 20),
+          const Card(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Text('Premium Fitness Plan'),
+                  Text(
+                    '\$29.99/month',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.deepOrange,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size.fromHeight(50),
+            ),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Processing Payment & Subscription...'),
+                ),
+              );
+            },
+            child: const Text('Pay Now'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+import 'package:flutter/material.dart';
+
+void main() => runApp(const ParkingApp());
+
+class ParkingApp extends StatelessWidget {
+  const ParkingApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'EasyPark',
+      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
+      home: const ParkingLoginScreen(),
+    );
+  }
+}
+
+class ParkingLoginScreen extends StatelessWidget {
+  const ParkingLoginScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.local_parking, size: 80, color: Colors.blue),
+            const SizedBox(height: 20),
+            const TextField(
+              decoration: InputDecoration(
+                labelText: 'Username/Email',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const TextField(
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size.fromHeight(50),
+              ),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ParkingDashboardScreen(),
+                  ),
+                );
+              },
+              child: const Text('User Login'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ParkingDashboardScreen extends StatelessWidget {
+  const ParkingDashboardScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Parking Finder Dashboard')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            // Register Count of Empty Parking
+            Card(
+              color: Colors.blue.shade50,
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Total Empty Parking Slots:',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      '42',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Free Parking Slots Display',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: ListView.builder(
+                itemCount: 6,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.directions_car,
+                        color: Colors.green,
+                      ),
+                      title: Text('Slot A-${index + 101}'),
+                      subtitle: const Text('Zone 1 • Floor 2'),
+                      trailing: ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Booking Confirmation'),
+                              content: Text(
+                                'Book Slot A-${index + 101} for 2 hours?',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('Cancel'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'Slot Booked Successfully!',
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text('Confirm Booking'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        child: const Text('Book Slot'),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+import 'package:flutter/material.dart';
+
+void main() => runApp(const JobAssistantApp());
+
+class JobAssistantApp extends StatelessWidget {
+  const JobAssistantApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'AI Job Assistant',
+      theme: ThemeData(primarySwatch: Colors.indigo, useMaterial3: true),
+      home: const JobAuthScreen(),
+    );
+  }
+}
+
+class JobAuthScreen extends StatefulWidget {
+  const JobAuthScreen({super.key});
+
+  @override
+  State<JobAuthScreen> createState() => _JobAuthScreenState();
+}
+
+class _JobAuthScreenState extends State<JobAuthScreen> {
+  bool isLogin = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.work, size: 80, color: Colors.indigo),
+                const SizedBox(height: 16),
+                Text(
+                  isLogin ? 'Find Your Dream Job' : 'Start Journey',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                const SizedBox(height: 24),
+                const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    prefixIcon: Icon(Icons.email),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    prefixIcon: Icon(Icons.lock),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                  ),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SubscriptionScreen(),
+                      ),
+                    );
+                  },
+                  child: Text(isLogin ? 'Login' : 'Register'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SubscriptionScreen extends StatelessWidget {
+  const SubscriptionScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Register Subscription')),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            const Text(
+              'Select a Plan',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            Card(
+              child: ListTile(
+                title: const Text('Pro Job Seeker - \$19/mo'),
+                subtitle: const Text(
+                  'AI Resume Matching & Auto-Apply Features',
+                ),
+                trailing: Radio(
+                  value: true,
+                  groupValue: true,
+                  onChanged: (_) {},
+                ),
+              ),
+            ),
+            const Spacer(),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size.fromHeight(50),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProfileSetupScreen(),
+                  ),
+                );
+              },
+              child: const Text('Subscribe & Continue'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ProfileSetupScreen extends StatelessWidget {
+  const ProfileSetupScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Personal Details & Resume')),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const TextField(
+              decoration: InputDecoration(
+                labelText: 'Full Name',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const TextField(
+              decoration: InputDecoration(
+                labelText: 'Phone Number',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'Resume Upload',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              height: 120,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.cloud_upload, size: 40, color: Colors.indigo),
+                  Text('Tap to upload PDF or DOCX'),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size.fromHeight(50),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const JobSelectionScreen(),
+                  ),
+                );
+              },
+              child: const Text('Save Profile & Choose Job'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class JobSelectionScreen extends StatelessWidget {
+  const JobSelectionScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Choosing Job')),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: 5,
+        itemBuilder: (context, index) {
+          return Card(
+            margin: const EdgeInsets.only(bottom: 12),
+            child: ListTile(
+              title: Text('Software Engineer Position #${index + 1}'),
+              subtitle: const Text('Tech Corp Inc. • Full Time • Remote'),
+              trailing: ElevatedButton(
+                onPressed: () {},
+                child: const Text('Apply'),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
