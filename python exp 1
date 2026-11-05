@@ -1,0 +1,34 @@
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Experiment 1: Free-Space Path Loss
+
+# Distance in kilometres
+d = np.linspace(0.1, 5, 100)
+
+# Frequency in MHz
+f = 900
+
+# Calculate Free-Space Path Loss
+fspl = 20 * np.log10(d) + 20 * np.log10(f) + 32.44
+
+# Transmitted power in dBm
+Pt = 30
+
+# Calculate received power
+pr = Pt - fspl
+
+# Plot the graph
+plt.plot(d, pr)
+
+plt.xlabel("Distance (km)")
+plt.ylabel("Received Power (dBm)")
+plt.title("Free-Space Path Loss at 900 MHz")
+
+plt.grid(True)
+plt.show()
+
+# Print the results
+print("Received power at 0.1 km:", round(pr[0], 2), "dBm")
+print("Received power at 5 km:", round(pr[-1], 2), "dBm")
